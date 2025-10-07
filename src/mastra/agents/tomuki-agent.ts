@@ -1,8 +1,8 @@
 import { Agent } from "@mastra/core";
 import { Memory } from "@mastra/memory";
-import { LibSQLStore } from "@mastra/libsql";
 import { google } from "@ai-sdk/google";
 import { individualSelfTool } from "../tools/individual-self/individual-self-tool";
+import { postgresStore } from "../storage";
 
 export const tomukiAgent = new Agent({
   name: "Tomuki Agent",
@@ -13,8 +13,6 @@ export const tomukiAgent = new Agent({
   model: google("gemini-2.5-flash"),
   tools: { individualSelfTool },
   memory: new Memory({
-    storage: new LibSQLStore({
-      url: "file:../../.db/mastra.db", // path is relative to the .mastra/output directory
-    }),
+    storage: postgresStore,
   }),
 });
