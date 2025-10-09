@@ -18,10 +18,15 @@ export const tomukiAgent = new Agent({
     vector: pgVector,
     embedder: fastembed,
     options: {
+      workingMemory: {
+        enabled: true,
+        scope: "resource",
+      },
       lastMessages: 10,
       semanticRecall: {
         topK: 3,
         messageRange: 2,
+        scope: "resource",
       },
     },
   }),
