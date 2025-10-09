@@ -2,7 +2,8 @@ import { Agent } from "@mastra/core";
 import { Memory } from "@mastra/memory";
 import { google } from "@ai-sdk/google";
 import { individualSelfTool } from "../tools/individual-self/individual-self-tool";
-import { postgresStore } from "../storage";
+import { pgVector, postgresStore } from "../storage";
+import { fastembed } from "@mastra/fastembed";
 
 export const tomukiAgent = new Agent({
   name: "Tomuki Agent",
@@ -14,5 +15,14 @@ export const tomukiAgent = new Agent({
   tools: { individualSelfTool },
   memory: new Memory({
     storage: postgresStore,
+    vector: pgVector,
+    embedder: fastembed,
+    options: {
+      lastMessages: 10,
+      semanticRecall: {
+        topK: 3,
+        messageRange: 2,
+      },
+    },
   }),
 });
